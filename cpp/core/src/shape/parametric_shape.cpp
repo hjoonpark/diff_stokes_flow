@@ -38,7 +38,7 @@ void ParametricShape<dim>::Initialize(const std::array<int, dim>& cell_nums, con
     for (int i = 0; i < node_num_prod_; ++i) signed_distance_gradients_[i].resize(param_num_);
 
     if (compute_signed_distance_and_grad) {
-        #pragma omp parallel for
+        // #pragma omp parallel for
         for (int i = 0; i < node_num_prod_; ++i) {
             const auto idx = GetIndex(i, node_nums_);
             // Cast to real.
@@ -46,6 +46,14 @@ void ParametricShape<dim>::Initialize(const std::array<int, dim>& cell_nums, con
             for (int j = 0; j < dim; ++j) p[j] = static_cast<real>(idx[j]);
             signed_distances_[i] = ComputeSignedDistanceAndGradients(p, signed_distance_gradients_[i]);
         }
+
+        // for (int i = 0; i < node_num_prod_; ++i) {
+        //     std::cout << "node : " << i << " | " << signed_distances_[i] << std::endl;
+        //     for(int j = 0; j < signed_distance_gradients_[i].size(); j++) {
+        //         std::cout << signed_distance_gradients_[i][j] << "  ";
+        //     }
+        //     std::cout << std::endl;
+        // }
     }
 }
 

@@ -48,7 +48,8 @@ if __name__ == '__main__':
     sample_num = int(config['sample_num'])
     solver = config['solver']
     rel_tol = float(config['rel_tol'])
-    max_iter = int(config['max_iter'])
+    # max_iter = int(config['max_iter'])
+    max_iter = 1
     enable_grad_check = config['enable_grad_check'] == 'True'
     spp = int(config['spp'])
     fps = int(config['fps'])
@@ -94,7 +95,13 @@ if __name__ == '__main__':
         loss /= unit_loss
         grad /= unit_loss
         t_end = time.time()
-        print('loss: {:3.6e}, |grad|: {:3.6e}, time: {:3.6f}s'.format(loss, np.linalg.norm(grad), t_end - t_begin))
+        # print('loss: {:3.6e}, |grad|: {:3.6e}, time: {:3.6f}s'.format(loss, np.linalg.norm(grad), t_end - t_begin))
+
+        # print()
+        # print("loss:", loss)
+        # print("dloss:")
+        # print(grad)
+        # print()
         return loss, grad
 
     if enable_grad_check:
@@ -159,7 +166,7 @@ if __name__ == '__main__':
     ax_loss.grid(True, which='both')
 
     ax_grad.set_position((0.55, 0.2, 0.33, 0.6))
-    ax_grad.plot(iterations, [np.linalg.norm(g) + np.finfo(np.float).eps for _, _, g in opt_history],
+    ax_grad.plot(iterations, [np.linalg.norm(g) + np.finfo(np.float64).eps for _, _, g in opt_history],
         color='tab:green')
     ax_grad.set_xlabel('Iteration')
     ax_grad.set_ylabel('|Gradient|')

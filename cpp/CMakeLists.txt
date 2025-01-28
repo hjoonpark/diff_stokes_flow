@@ -19,11 +19,12 @@ endif()
 
 # Pardiso.
 option(PARDISO_AVAILABLE "Pardiso" OFF)
+set(PARDISO_LIC_PATH "/nobackup/joon/1_Projects/Fluid/csrc/external/lib")
 if(PARDISO_AVAILABLE)
     add_definitions(-DPARDISO_AVAILABLE)
     add_library(pardiso SHARED IMPORTED)
     set_target_properties(pardiso PROPERTIES
-        IMPORTED_LOCATION "$ENV{PARDISO_LIC_PATH}/libpardiso600-GNU720-X86-64.so"
+        IMPORTED_LOCATION "${PARDISO_LIC_PATH}/libpardiso800-GNU621-X86-64-May29-2023.so"
     )
 else()
     message("Pardiso not detected.")

@@ -1,6 +1,8 @@
 #include "solver/pardiso_solver.h"
 #include "common/common.h"
 
+// #define PARDISO_AVAILABLE
+
 #ifdef PARDISO_AVAILABLE
 // The following C-style code is required by Pardiso so we do not change it.
 #include <stdio.h>

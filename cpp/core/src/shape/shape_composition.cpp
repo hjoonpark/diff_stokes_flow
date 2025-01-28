@@ -5,6 +5,8 @@
 #include "shape/sphere.h"
 #include "shape/polar_bezier.h"
 
+using std::cout;
+using std::endl;
 template<>
 void ShapeComposition<2>::AddParametricShape(const std::string& name, const int param_num) {
     ParametricShapeInfo<2> info;
@@ -98,12 +100,14 @@ const real ShapeComposition<dim>::ComputeSignedDistanceAndGradients(const std::a
     grad.clear();
     grad.resize(ParametricShape<dim>::param_num(), 0);
     if (is_solid) {
-        for (int i = 0; i < min_pos_param_num; ++i)
+        for (int i = 0; i < min_pos_param_num; ++i) {
             grad[min_pos_param_begin + i] = min_pos_dist_grad[i];
+        }
         return min_pos_dist;
     } else {
-        for (int i = 0; i < min_neg_param_num; ++i)
+        for (int i = 0; i < min_neg_param_num; ++i){
             grad[min_neg_param_begin + i] = min_neg_dist_grad[i];
+        }
         return -min_neg_dist;
     }
 }

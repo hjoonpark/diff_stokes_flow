@@ -2,6 +2,8 @@
 #include "common/common.h"
 #include "unsupported/Eigen/Polynomials"
 
+using std::cout;
+using std::endl;
 void Bezier2d::InitializeCustomizedData() {
     CheckError(param_num() == 8, "Inconsistent number of parameters.");
     // s(t) = control_points * A * [1, t, t^2, t^3].
@@ -117,6 +119,7 @@ const real Bezier2d::ComputeSignedDistanceAndGradients(const std::array<real, 2>
     const real eps = Epsilon();
     Vector2r q_unit = Vector2r::Zero();
     if (min_dist > eps) q_unit = q / min_dist;
+
     const Vector8r grad_vec(q_unit.transpose() * min_proj_gradients);
     grad.resize(8);
     for (int i = 0; i < 8; ++i) grad[i] = sign * grad_vec(i);

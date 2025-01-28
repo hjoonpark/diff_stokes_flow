@@ -233,11 +233,17 @@ class EnvBase:
             # Solve for the velocity field.
             forward_result_single = scene.Forward(solver)
             u_single = ndarray(scene.GetVelocityFieldFromForward(forward_result_single))
-            info_single = { 'scene': scene, 'velocity_field': self.reshape_velocity_field(u_single) }
+            u_single_reshaped = self.reshape_velocity_field(u_single)
+            info_single = { 'scene': scene, 'velocity_field':  u_single_reshaped}
             info.append(info_single)
             u.append(u_single)
+            print()
+            print("inlet")
+            print(u_single_reshaped[0,:,:])
+            print("output")
+            print(u_single_reshaped[-1,:,:])
             forward_result.append(forward_result_single)
-
+            
         # Compute the loss.
         loss_and_grad = self._loss_and_grad_on_velocity_field(u[0] if mode_num == 1 else u)
         if mode_num == 1:
@@ -251,8 +257,13 @@ class EnvBase:
         grads = [g for _, g in loss_and_grad]
         grad = 0
         for (_, J), scene, g, f in zip(param_and_J, scenes, grads, forward_result):
+            print()
+            print("loss:", loss)
             g = ndarray(scene.Backward(solver, f, g))
+            print("grad1:", g.shape, g.min(), g.max())
             grad += J.T @ g
+            print("grad2:", grad.shape, grad.min(), grad.max())
+            print()
         return loss, grad, info
 
     def render(self, xk, img_name, options):
@@ -280,12 +291,12 @@ class EnvBase:
             ax = fig.add_subplot(111)
             padding = 5
             ax.set_title('Loss: {:3.6e}'.format(loss))
-            ax.set_xticks([])
-            ax.set_yticks([])
+            # ax.set_xticks([])
+            # ax.set_yticks([])
             ax.set_xlim([-padding, cx + padding])
             ax.set_ylim([-padding, cy + padding])
             ax.set_aspect('equal')
-            ax.axis('off')
+            # ax.axis('off')
 
             # Plot cells.
             lines = []

@@ -1,0 +1,1 @@
+python run_demo.py amplifier

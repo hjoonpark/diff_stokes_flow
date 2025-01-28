@@ -7,7 +7,7 @@ class AmplifierEnv2d(EnvBase):
     def __init__(self, seed, folder):
         np.random.seed(seed)
 
-        cell_nums = (64, 48)
+        cell_nums = (64, 40)
         E = 100
         nu = 0.499
         vol_tol = 1e-3
@@ -30,7 +30,7 @@ class AmplifierEnv2d(EnvBase):
 
         # Other data members.
         self._inlet_velocity = inlet_velocity
-        self._outlet_velocity = 3 * inlet_velocity
+        self._outlet_velocity = 2 * inlet_velocity
         self._inlet_range = inlet_range
 
     def _variables_to_shape_params(self, x):
@@ -56,7 +56,7 @@ class AmplifierEnv2d(EnvBase):
         upper[:, 0] *= cx
         upper[:, 1] *= cy
         params = np.concatenate([lower.ravel(), upper.ravel()])
-
+        
         # Jacobian.
         J = np.zeros((params.size, x.size))
         J[1, 4] = 1
